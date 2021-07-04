@@ -8,17 +8,18 @@ tbody = d3.select("tbody");
 console.log("hello1");
 
 // Loop through the table
-function displayData(content){
+function displayData(content) {
     tbody.text("")
-    content.forEach(function(ufo_sighting){
-    new_tr = tbody.append("tr")
-    Object.entries(ufo_sighting).forEach(function([key, value]){
+    content.forEach(function (ufo_sighting) {
+        new_tr = tbody.append("tr")
+        Object.entries(ufo_sighting).forEach(function ([key, value]) {
             new_td = new_tr.append("td").text(value)
+        })
     })
-})}
+}
 
 displayData(tableData);
-console.log("hello2");
+// console.log("hello2");
 
 // Select the button
 var button = d3.select("#filter-btn");
@@ -41,45 +42,52 @@ function runEnter() {
 
     console.log(inputValue);
 
-    // Search for data, use Date.parse()to convert 
+    // Search for data, use Date.parse()to convert data from string to date
 
-    var result = tableData.filter(ufo => ((Date.parse(ufo.datetime)) >= (Date.parse(inputValue))));
+    var result = tableData.filter(row => row.datetime === inputValue);
 
     console.log(result);
+    console.log(inputValue);
+    
 
-    // Put result into the table
+    // Append the filtered data back to the table cells
+    // Use a if else loop to filter data
 
     d3.select('tbody').html("");
-    result.forEach((single) => {
+    (result.length > 0 ? result.forEach((single) => {
 
-     var row = d3.select('tbody').append("tr");   
-     Object.entries(single).forEach(([key,value]) => {row.append("td").text(value)});
+        var row = d3.select('tbody').append("tr");
+        Object.entries(single).forEach(([key, value]) => { row.append("td").text(value) });
 
+    }) :
+        tableData.forEach((single) => {
 
-    });
-}
+            var row = d3.select('tbody').append("tr");
+            Object.entries(single).forEach(([key, value]) => { row.append("td").text(value) });
 
-var filterInputs = d3.selectAll('form-control');
+        }))
+};
+
+var filterInputs = d3.selectAll('.form-control');
 
 // Clears input fields and input object
 function clearEntries() {
     filters = {};
 
     //Set every input field to empty
-    filterInputs._groupp[0].forEach(entry => {
-        if (every.value != 0) {
-            d3.select('#' + every.id).node().value = "";
-        }
-
+    filterInputs._groups[0].forEach(entry => {
+        if (entry.value != 0) {
+            d3.select('#' + entry.id).node().value = ""
+        };
     });
 };
 
-var clearButton = d3.select('#clear');
+// var clearButton = d3.select('#filter-btn');
 // Clear button on click clears fields
-clearButton.on('click', function(){
+// clearButton.on('click', function () {
 
-    // Keeps page from refreshing completely, only want the table to regresh
-    d3.event.preventDefault();
+    // Keeps page from refreshing completely, only want the table to refresh
+    // d3.event.preventDefault();
     // Clear input fields
-    clearEntries()
-});
+    // clearEntries()
+// });

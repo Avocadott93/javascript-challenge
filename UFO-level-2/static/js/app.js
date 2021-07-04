@@ -6,7 +6,23 @@ var tableData = data;
 
 // YOUR CODE HERE!
 
-// Select the input
+// Make the table show
+// select tbody
+tbody = d3.select("tbody");
+console.log("hello1");
+
+// Loop through the table
+function displayData(content) {
+    tbody.text("")
+    content.forEach(function (ufo_sighting) {
+        new_tr = tbody.append("tr")
+        Object.entries(ufo_sighting).forEach(function ([key, value]) {
+            new_td = new_tr.append("td").text(value)
+        })
+    })
+}
+
+displayData(tableData);
 
 
 // Select the button
@@ -56,8 +72,8 @@ function runEnter() {
 
     // Search for data, use Date.parse()to convert 
 
-    var result = tableData.filter(ufo => ((Date.parse(ufo.datetime)) >= (Date.parse(inputValue)) && ufo.city == inputCity 
-    && ufo.state == inputState && ufo.country == inputCountry && ufo.shape == inputShape));
+    var result = tableData.filter(ufo => ((Date.parse(ufo.datetime)) === (Date.parse(inputValue)) && ufo.city == inputCity
+        && ufo.state == inputState && ufo.country == inputCountry && ufo.shape == inputShape));
 
     console.log(result);
 
@@ -66,8 +82,8 @@ function runEnter() {
     d3.select('tbody').html("");
     result.forEach((single) => {
 
-     var row = d3.select('tbody').append("tr");   
-     Object.entries(single).forEach(([key,value]) => {row.append("td").text(value)});
+        var row = d3.select('tbody').append("tr");
+        Object.entries(single).forEach(([key, value]) => { row.append("td").text(value) });
 
 
     });
